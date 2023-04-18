@@ -2,4 +2,4 @@
  microservices for account, community, post and search logic in java
 
 ## To-Do
-Ctrl-shift-p : 
+Ctrl-shift-p : Dev Containers: Rebuild and Reopen in Container
