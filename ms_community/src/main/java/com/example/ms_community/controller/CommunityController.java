@@ -20,6 +20,7 @@ public class CommunityController {
     @Autowired
     private CommunityRepository communityRepository;
     
+    
     @PostMapping("/add")
     public Community addNewCommunity(@RequestBody Community newCommunity) {
         Community community = new Community();
