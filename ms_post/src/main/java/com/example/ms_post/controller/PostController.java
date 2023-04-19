@@ -5,6 +5,7 @@ import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.r2dbc.R2dbcTransactionManagerAutoConfiguration;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -43,7 +44,19 @@ public class PostController {
         }
     }
 
-
+    @GetMapping("/view/{id}")
+    public ResponseEntity<List<Post>> getPostbyUserId(@PathVariable ("id") long id) {
+        try {
+            List<Post> postData = new ArrayList<Post>();
+            postRepository.findBypostIdUser(id).forEach(postData::add);
+            if (postData.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(postData, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
 
     @PostMapping("/add")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
