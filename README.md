@@ -8,7 +8,8 @@ Pour utiliser l'environnement de développement en docker, vous devez faire les 
 2. Ctrl-shift-p : Dev Containers: Rebuild and Reopen in Container (Dans le workspace du projet que vous voulez ouvrir, donc après avoir ouvert le projet dans VSCode avec github desktop par exemple)
 
 ## Documentation open-api swagger-ui
-Utiliser springdoc, plus a jour que springfox : <https://www.baeldung.com/spring-rest-openapi-documentation>
+Utiliser springdoc, plus a jour que springfox : 
+    <https://www.baeldung.com/spring-rest-openapi-documentation>
 
 ## Simple tutorial for creating api with our setup
 Sources:
