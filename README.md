@@ -11,4 +11,6 @@ Pour utiliser l'environnement de développement en docker, vous devez faire les 
 Utiliser springdoc, plus a jour que springfox : <https://www.baeldung.com/spring-rest-openapi-documentation>
 
 ## Simple tutorial for creating api with our setup
-<https://www.bezkoder.com/spring-boot-postgresql-example/>
+Sources:
+    <https://www.bezkoder.com/spring-boot-postgresql-example/>
+    <https://www.makeuseof.com/rest-api-spring-boot-create/>
