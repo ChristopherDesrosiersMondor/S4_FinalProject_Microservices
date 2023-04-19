@@ -15,7 +15,7 @@ public class Post {
     
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private long id;
 
     @Column(name = "postTitle")
     private String postTitle;
@@ -35,30 +35,32 @@ public class Post {
     @Column(name="postDownvote")
     private Integer postDownvote;
 
-    @Column(name="idUser")
-    private Integer idUser;
+    @Column(name="postIdUser")
+    private long postIdUser;
 
-    @Column(name="idCom")
-    private Integer idCom;
+    @Column(name="postIdCom")
+    private Integer postIdCom;
 
     public Post(String postTitle, String postContent, String postSource, Date postDate, Integer postUpvote,
-            Integer postDownvote, Integer idUser, Integer idCom) {
+            Integer postDownvote, long postIdUser, Integer postIdCom) {
         this.postTitle = postTitle;
         this.postContent = postContent;
         this.postSource = postSource;
         this.postDate = postDate;
-        this.postUpvote = postUpvote;
-        this.postDownvote = postDownvote;
-        this.idUser = idUser;
-        this.idCom = idCom;
+        this.postUpvote = 0;
+        this.postDownvote = 0;
+        this.postIdUser = postIdUser;
+        this.postIdCom = postIdCom;
     }
 
     @Override
     public String toString() {
         return "Post [id=" + id + ", postTitle=" + postTitle + ", postContent=" + postContent + ", postSource="
                 + postSource + ", postDate=" + postDate + ", postUpvote=" + postUpvote + ", postDownvote="
-                + postDownvote + ", idUser=" + idUser + ", idCom=" + idCom + "]";
+                + postDownvote + ", postIdUser=" + postIdUser + ", postIdCom=" + postIdCom + "]";
     }
+
+   
   
     
 }
