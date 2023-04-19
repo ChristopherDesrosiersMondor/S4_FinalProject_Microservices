@@ -1,0 +1,13 @@
+{
+    "Servers": {
+        "1": {
+            "Name": "Hublot Hull",
+            "Group": "Treasure Chest",
+            "Port": 5432,
+            "Username": "darksea",
+            "Host": "postgres",
+            "SSLMode": "prefer",
+            "MaintenanceDB": "postgres"
+        }
+    }
+}
