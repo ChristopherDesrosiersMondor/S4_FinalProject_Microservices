@@ -1,0 +1,25 @@
+services:
+  postgres:
+    container_name: postgres
+    image: postgres
+    restart: always
+    environment:
+      POSTGRES_USER: darksea
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: hublot.hull
+    ports:
+      - "5432:5432"
+  pgadmin:
+    container_name: pgadmin4_container
+    image: dpage/pgadmin4
+    restart: always
+    volumes:
+      - ./servers.json:/pgadmin4/servers.json
+    environment:
+      PGADMIN_DEFAULT_EMAIL: collective@darksea.com
+      PGADMIN_DEFAULT_PASSWORD: hublot.admin
+    ports:
+      - "5050:80"
+volumes:
+  db-data:
+  
