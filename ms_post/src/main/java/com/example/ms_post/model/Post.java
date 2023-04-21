@@ -41,6 +41,10 @@ public class Post {
     @Column(name="postIdCom")
     private Integer postIdCom;
 
+    public Post() {
+        
+    }
+
     public Post(String postTitle, String postContent, String postSource, Date postDate, Integer postUpvote,
             Integer postDownvote, long postIdUser, Integer postIdCom) {
         this.postTitle = postTitle;
