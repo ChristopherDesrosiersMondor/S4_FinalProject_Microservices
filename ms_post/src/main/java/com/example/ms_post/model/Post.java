@@ -1,6 +1,8 @@
 package com.example.ms_post.model;
 
 import java.sql.Date;
+import java.time.LocalDate;
+
 import jakarta.persistence.*;
 import lombok.Data;
 import lombok.Getter;
@@ -27,7 +29,7 @@ public class Post {
     private String postSource;
     
     @Column(name="postDate")
-    private Date postDate;
+    private LocalDate postDate;
 
     @Column(name="postUpvote")
     private Integer postUpvote;
@@ -45,7 +47,7 @@ public class Post {
         
     }
 
-    public Post(String postTitle, String postContent, String postSource, Date postDate, Integer postUpvote,
+    public Post(String postTitle, String postContent, String postSource, LocalDate postDate, Integer postUpvote,
             Integer postDownvote, long postIdUser, Integer postIdCom) {
         this.postTitle = postTitle;
         this.postContent = postContent;
