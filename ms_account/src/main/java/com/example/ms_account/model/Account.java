@@ -1,6 +1,6 @@
 package com.example.ms_account.model;
 
-import java.sql.Date;
+import java.time.LocalDate;
 
 import jakarta.persistence.*;
 import lombok.Getter;
@@ -26,24 +26,24 @@ public class Account {
     private String userEmail;
 
     @Column(name = "userPseudo")
-    private String userpseudo;
+    private String userPseudo;
 
     @Column(name = "userPassword")
     private String userPassword;
 
     @Column(name = "userBirthday")
-    private Date userBirthday;
+    private LocalDate userBirthday;
 
     public Account() {
 
     }
 
-    public Account(String userLastName, String userFirstName, String userEmail, String userpseudo,
-            String userPassword, Date userBirthday) {
+    public Account(String userLastName, String userFirstName, String userEmail, String userPseudo,
+            String userPassword, LocalDate userBirthday) {
         this.userLastName = userLastName;
         this.userFirstName = userFirstName;
         this.userEmail = userEmail;
-        this.userpseudo = userpseudo;
+        this.userPseudo = userPseudo;
         this.userPassword = userPassword;
         this.userBirthday = userBirthday;
     }

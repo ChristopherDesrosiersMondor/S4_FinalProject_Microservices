@@ -61,7 +61,7 @@ public class AccountController {
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         try {
             Account accountToAdd = accountRepository.save(new Account(account.getUserLastName(), account.getUserFirstName(), account.getUserEmail(), 
-                                                                    account.getUserpseudo(), account.getUserPassword(), account.getUserBirthday()));
+                                                                    account.getUserPseudo(), account.getUserPassword(), account.getUserBirthday()));
             return new ResponseEntity<>(accountToAdd, HttpStatus.CREATED);
         }
         catch (Exception e) {
@@ -78,7 +78,7 @@ public class AccountController {
             modifiedAccount.setUserLastName(account.getUserLastName());
             modifiedAccount.setUserFirstName(account.getUserFirstName());
             modifiedAccount.setUserEmail(account.getUserEmail());
-            modifiedAccount.setUserpseudo(account.getUserpseudo());
+            modifiedAccount.setUserPseudo(account.getUserPseudo());
             modifiedAccount.setUserPassword(account.getUserPassword());
             modifiedAccount.setUserBirthday(account.getUserBirthday());
 
