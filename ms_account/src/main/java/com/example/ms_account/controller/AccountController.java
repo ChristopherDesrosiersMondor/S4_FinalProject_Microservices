@@ -144,7 +144,7 @@ public class AccountController {
         @ApiResponse (responseCode = "200", description = "Account deleted", 
         content = {@Content (mediaType = "application/json",
         schema = @Schema (implementation = Account.class))}),
-        @ApiResponse(responseCode = "400", description = "Invalid id", 
+        @ApiResponse(responseCode = "405", description = "Invalid data", 
             content = @Content),
         @ApiResponse(responseCode = "404", description = "Account not found", 
         content = @Content),
@@ -153,12 +153,18 @@ public class AccountController {
 
     @DeleteMapping("/delete/{id}")
         public ResponseEntity<HttpStatus> deleteAccount(@PathVariable("id") long id) {
-            try {
-                accountRepository.deleteById(id);
-                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            Optional<Account> accountData = accountRepository.findById(id);
+            if(accountData.isPresent()) {
+                try {
+                    accountRepository.deleteById(id);
+                    return new ResponseEntity<>(HttpStatus.OK);
+                }
+                catch (Exception e) {
+                    return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+                }
             }
-            catch (Exception e) {
-                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            else {
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
             }
         }
 
