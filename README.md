@@ -10,6 +10,7 @@ Pour utiliser l'environnement de développement en docker, vous devez faire les 
 ## Documentation open-api swagger-ui
 Utiliser springdoc, plus a jour que springfox : 
     <https://www.baeldung.com/spring-rest-openapi-documentation>
+    <https://springdoc.org/v2/>
 
 ## Response codes
 <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>
