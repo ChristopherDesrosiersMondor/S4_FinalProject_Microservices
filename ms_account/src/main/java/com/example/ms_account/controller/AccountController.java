@@ -34,15 +34,15 @@ public class AccountController {
     @Autowired
     AccountRepository accountRepository;
 
-    @Operation(summary = "Get a book by its id")
+    @Operation(summary = "Get all accounts")
     @ApiResponses(value = { 
-        @ApiResponse (responseCode = "200", description = "Success", 
+        @ApiResponse (responseCode = "200", description = "Found the accounts", 
         content = {@Content (mediaType = "application/json",
         schema = @Schema (implementation = Account.class))}),
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
-            content = @Content), 
-        @ApiResponse(responseCode = "404", description = "Book not found", 
-            content = @Content) })
+        @ApiResponse(responseCode = "404", description = "Could not find the accounts", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @GetMapping("/view/all")
     public ResponseEntity<List<Account>> getAllAccounts() {
@@ -61,6 +61,18 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Get an account by Id")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Account found", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "404", description = "Account not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid id", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
     @GetMapping("/view/{id}")
     public ResponseEntity<Account> getAccountById(@PathVariable("id") long id) {
         Optional<Account> accountData = accountRepository.findById(id);
@@ -73,6 +85,16 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Add an account")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "201", description = "Account added", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
     @PostMapping("/add")
     public ResponseEntity<Account> createAccount(@RequestBody Account account) {
         try {
@@ -84,6 +106,18 @@ public class AccountController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Operation(summary = "Edit an account")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Account edited", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Account not found", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Account> updateAccount(@PathVariable("id") long id, @RequestBody Account account) {
@@ -104,6 +138,18 @@ public class AccountController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Delete an account")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Account deleted", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid id", 
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Account not found", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @DeleteMapping("/delete/{id}")
         public ResponseEntity<HttpStatus> deleteAccount(@PathVariable("id") long id) {
