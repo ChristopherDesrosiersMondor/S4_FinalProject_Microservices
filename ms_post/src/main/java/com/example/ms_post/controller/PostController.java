@@ -20,6 +20,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ms_post.model.Post;
 import com.example.ms_post.repository.PostRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 @CrossOrigin(origins = "http://localost:8081")
 @RestController
 @RequestMapping("/posts")
@@ -42,6 +47,17 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @Operation(summary = "Get a post by its userId")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found the post",
+        content = {  @Content(mediaType = "application/json",
+        schema = @Schema(implementation = Post.class)) }), 
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content), 
+        @ApiResponse(responseCode = "404", description = "Post not found", 
+            content = @Content) })
 
     @GetMapping("/view/{id}")
     public ResponseEntity<List<Post>> getPostbyUserId(@PathVariable ("id") long id) {
