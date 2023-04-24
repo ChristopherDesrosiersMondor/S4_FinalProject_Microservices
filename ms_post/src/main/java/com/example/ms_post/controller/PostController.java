@@ -22,6 +22,7 @@ import com.example.ms_post.repository.PostRepository;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
@@ -32,6 +33,16 @@ public class PostController {
 
     @Autowired
     PostRepository postRepository;
+
+    @Operation(summary = "Get all posts")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "Found the posts",
+        content = {  @Content(mediaType = "application/json",
+        schema = @Schema(implementation = Post.class)) }), 
+        @ApiResponse(responseCode = "404", description = "Posts not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+            content = @Content) }) 
 
     @GetMapping("/view/all")
     public ResponseEntity<List<Post>> getAllPosts() {
@@ -49,15 +60,18 @@ public class PostController {
     }
 
 
-    @Operation(summary = "Get a post by its userId")
+    @Operation(summary = "Get a post by its user ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Found the post",
         content = {  @Content(mediaType = "application/json",
         schema = @Schema(implementation = Post.class)) }), 
-        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+        @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", 
             content = @Content), 
         @ApiResponse(responseCode = "404", description = "Post not found", 
-            content = @Content) })
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+            content = @Content) }) 
+            
 
     @GetMapping("/view/{id}")
     public ResponseEntity<List<Post>> getPostbyUserId(@PathVariable ("id") long id) {
@@ -73,6 +87,16 @@ public class PostController {
         }
     }
 
+    @Operation(summary = "Add a post")
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "201", description = "Post created",
+        content = {  @Content(mediaType = "application/json",
+        schema = @Schema(implementation = Post.class)) }), 
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+            content = @Content), 
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+            content = @Content) }) 
+
     @PostMapping("/add")
     public ResponseEntity<Post> createPost(@RequestBody Post post) {
         try {
@@ -82,6 +106,19 @@ public class PostController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @Operation(summary = "Edit a post by its ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Post updated", 
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = Post.class)) }),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content), 
+        @ApiResponse(responseCode = "404", description = "The post was not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+            content = @Content)
+        })
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Post> updatePost(@PathVariable("id") long id, @RequestBody Post post) {
@@ -103,6 +140,19 @@ public class PostController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    @Operation(summary = "Delete a post by its ID")
+    @ApiResponses(value = { 
+        @ApiResponse(responseCode = "200", description = "Post deleted", 
+            content = { @Content(mediaType = "application/json", 
+            schema = @Schema(implementation = Post.class)) }),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content), 
+        @ApiResponse(responseCode = "404", description = "The post was not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal server error", 
+            content = @Content)
+        })
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") long id) {
