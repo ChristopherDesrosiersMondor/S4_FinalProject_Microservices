@@ -7,6 +7,12 @@ import java.util.Optional;
 import com.example.ms_account.model.Account;
 import com.example.ms_account.repository.AccountRepository;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,6 +33,16 @@ public class AccountController {
     
     @Autowired
     AccountRepository accountRepository;
+
+    @Operation(summary = "Get a book by its id")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Success", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid id supplied", 
+            content = @Content), 
+        @ApiResponse(responseCode = "404", description = "Book not found", 
+            content = @Content) })
 
     @GetMapping("/view/all")
     public ResponseEntity<List<Account>> getAllAccounts() {
