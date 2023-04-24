@@ -48,7 +48,9 @@ public class PostController {
     public ResponseEntity<List<Post>> getAllPosts() {
         try {
             List<Post> posts = new ArrayList<Post>();
+
             postRepository.findAll().forEach(posts::add);
+            
             if(posts.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
                      }
@@ -60,24 +62,49 @@ public class PostController {
     }
 
 
+    @Operation(summary = "Get a post by Id")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Post found", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Post.class))}),
+        @ApiResponse(responseCode = "404", description = "Post not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid id", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
+    @GetMapping("/view/{id}")
+    public ResponseEntity<Post> getAccountById(@PathVariable("id") long id) {
+        Optional<Post> postData = postRepository.findById(id);
+
+        if(postData.isPresent()) {
+            return new ResponseEntity<>(postData.get(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @Operation(summary = "Get a post by its user ID")
     @ApiResponses(value = {
         @ApiResponse(responseCode = "200", description = "Found the post",
         content = {  @Content(mediaType = "application/json",
         schema = @Schema(implementation = Post.class)) }), 
+        @ApiResponse(responseCode = "204", description = "No post for this user ID", 
+        content = @Content), 
         @ApiResponse(responseCode = "400", description = "Invalid user ID supplied", 
             content = @Content), 
-        @ApiResponse(responseCode = "404", description = "Post not found", 
-            content = @Content),
         @ApiResponse(responseCode = "500", description = "Internal Server Error", 
             content = @Content) }) 
-            
+                 
 
-    @GetMapping("/view/{id}")
+    @GetMapping("/view/by_user/{id}")
     public ResponseEntity<List<Post>> getPostbyUserId(@PathVariable ("id") long id) {
         try {
             List<Post> postData = new ArrayList<Post>();
             postRepository.findBypostIdUser(id).forEach(postData::add);
+            
             if (postData.isEmpty()) {
                 return new ResponseEntity<>(HttpStatus.NO_CONTENT);
             }
@@ -156,12 +183,19 @@ public class PostController {
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deletePost(@PathVariable("id") long id) {
-      try {
-        postRepository.deleteById(id);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
-      } catch (Exception e) {
-        return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
-      }
+        Optional<Post> postData = postRepository.findById(id);
+        if (postData.isPresent()) {
+            try {
+                postRepository.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+              } catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+              }
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+     
     }
 
 }
