@@ -35,6 +35,16 @@ public class ModeratorController {
     @Autowired
     ModeratorRepository moderatorRepository;
 
+    @Operation(summary = "Get all moderators")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Found the moderators", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "404", description = "Could not find the moderators", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
     @GetMapping("view/all")
     public ResponseEntity<List<Moderator>> getAllModerators() {
         try {
@@ -52,6 +62,19 @@ public class ModeratorController {
         }
     }
 
+
+    @Operation(summary = "Get moderator by Id")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Moderator found", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "404", description = "Moderator not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid id", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
     @GetMapping("view/{id}")
     public ResponseEntity<Moderator> getModeratorById(@PathVariable("id") long id) {
         Optional<Moderator> moderatorData = moderatorRepository.findById(id);
@@ -63,6 +86,21 @@ public class ModeratorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @Operation(summary = "Get list of moderators by UserId")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "List of moderators found", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "404", description = "Moderators not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid id", 
+        content = @Content),
+        @ApiResponse(responseCode = "204", description = "No moderator for this user ID", 
+        content = @Content), 
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @GetMapping("view/by_user/{id}")
     public ResponseEntity<List<Moderator>> getModeratorsByUserId(@PathVariable ("id") long id) {
@@ -79,6 +117,17 @@ public class ModeratorController {
         }
     }
 
+
+    @Operation(summary = "Add a moderator")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "201", description = "Moderator added", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+            content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
     @PostMapping("/add")
     public ResponseEntity<Moderator> createModerator(@RequestBody Moderator moderator) {
         try {
@@ -88,6 +137,19 @@ public class ModeratorController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+
+    @Operation(summary = "Edit moderator")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Moderator edited", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Moderator not found", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @PutMapping("/edit/{id}")
     public ResponseEntity<Moderator> updateModerator(@PathVariable("id") long id, @RequestBody Moderator moderator) {
@@ -104,6 +166,19 @@ public class ModeratorController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+
+    @Operation(summary = "Delete a moderator")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Moderator deleted", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Moderator.class))}),
+        @ApiResponse(responseCode = "405", description = "Invalid data", 
+            content = @Content),
+        @ApiResponse(responseCode = "404", description = "Moderator not found", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
 
     @DeleteMapping("/delete/{id}")
     public ResponseEntity<HttpStatus> deleteModerator(@PathVariable("id") long id) {
