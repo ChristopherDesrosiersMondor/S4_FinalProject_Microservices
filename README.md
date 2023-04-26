@@ -19,3 +19,15 @@ Utiliser springdoc, plus a jour que springfox :
 Sources:
     <https://www.bezkoder.com/spring-boot-postgresql-example/>
     <https://www.makeuseof.com/rest-api-spring-boot-create/>
+
+## Ressources we used to understand Dockerfile and image building
+<https://spring.io/guides/topicals/spring-boot-docker/>
+
+<https://docs.docker.com/engine/reference/commandline/build/>
+
+[Changing java app running port](https://www.baeldung.com/spring-boot-change-port)
+
+[Problems with the maven build in the process - plugin needed](https://stackoverflow.com/questions/36427868/failed-to-execute-goal-org-apache-maven-pluginsmaven-surefire-plugin2-12test)
+
+<https://docs.docker.com/engine/reference/commandline/tag/>
+
