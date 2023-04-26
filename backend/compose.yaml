@@ -29,7 +29,7 @@ services:
       - darksea
 
   ms_community:
-    image: darkseacollective/ms_account:version1.0
+    image: darkseacollective/ms_community:version1.1
     container_name: ms_community
     ports:
       - "8081:8081"
