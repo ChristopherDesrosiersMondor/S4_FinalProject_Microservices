@@ -15,6 +15,7 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -27,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.ms_community.repository.CommunityRepository;
 import com.example.ms_community.model.Community;;
 
+@CrossOrigin
 @RestController
 @RequestMapping("/communities")
 public class CommunityController {
@@ -94,7 +96,7 @@ public class CommunityController {
             content = @Content)
         })
     @GetMapping("/view/{id}")
-    public ResponseEntity<Community> getCommunityById(@PathVariable long id) {
+    public ResponseEntity<Community> getCommunityById(@PathVariable("id") long id) {
         Optional<Community> CommunityData = communityRepository.findById(id);
 
         if(CommunityData.isPresent()) {
@@ -118,12 +120,12 @@ public class CommunityController {
             content = @Content)
         })
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Community> updateCommunity(@PathVariable long id, @RequestBody Community updateCommunity) {
+    public ResponseEntity<Community> updateCommunity(@PathVariable("id") long id, @RequestBody Community updateCommunity) {
         Optional<Community> communityData = communityRepository.findById(id);
 
         if(communityData.isPresent()) {
             Community modifiedCommunity = communityData.get();
-            modifiedCommunity = new Community(modifiedCommunity);
+            modifiedCommunity = new Community(updateCommunity);
             return new ResponseEntity<>(communityRepository.save(modifiedCommunity), HttpStatus.OK);
         }
         else {
