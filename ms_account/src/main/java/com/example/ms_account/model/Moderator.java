@@ -10,6 +10,10 @@ import lombok.Setter;
 @Table(name = "moderators")
 public class Moderator {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+
     @Column(name = "moderatorUserId")
     private long moderatorUserId;
 

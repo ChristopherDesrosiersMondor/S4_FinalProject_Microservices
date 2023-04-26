@@ -52,6 +52,18 @@ public class ModeratorController {
         }
     }
 
+    @GetMapping("view/{id}")
+    public ResponseEntity<Moderator> getModeratorById(@PathVariable("id") long id) {
+        Optional<Moderator> moderatorData = moderatorRepository.findById(id);
+
+        if(moderatorData.isPresent()) {
+            return new ResponseEntity<>(moderatorData.get(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @GetMapping("view/by_user/{id}")
     public ResponseEntity<List<Moderator>> getModeratorsByUserId(@PathVariable ("id") long id) {
         try {
@@ -66,5 +78,49 @@ public class ModeratorController {
             return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
         }
     }
+
+    @PostMapping("/add")
+    public ResponseEntity<Moderator> createModerator(@RequestBody Moderator moderator) {
+        try {
+            Moderator moderatorToAdd = moderatorRepository.save(new Moderator(moderator.getModeratorUserId(), moderator.getModeratorComId()));
+            return new ResponseEntity<>(moderatorToAdd, HttpStatus.CREATED);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+    @PutMapping("/edit/{id}")
+    public ResponseEntity<Moderator> updateModerator(@PathVariable("id") long id, @RequestBody Moderator moderator) {
+        Optional<Moderator> moderatorData = moderatorRepository.findById(id);
+
+        if(moderatorData.isPresent()) {
+            Moderator modifiedModerator = moderatorData.get();
+            modifiedModerator.setModeratorUserId(moderator.getModeratorUserId());
+            modifiedModerator.setModeratorComId(moderator.getModeratorComId());
+
+            return new ResponseEntity<>(moderatorRepository.save(modifiedModerator), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<HttpStatus> deleteModerator(@PathVariable("id") long id) {
+        Optional<Moderator> moderatorData = moderatorRepository.findById(id);
+        if(moderatorData.isPresent()) {
+            try {
+                moderatorRepository.deleteById(id);
+                return new ResponseEntity<>(HttpStatus.OK);
+            }
+            catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     
 }
