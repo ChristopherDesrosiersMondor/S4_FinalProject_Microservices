@@ -117,6 +117,21 @@ public class ModeratorController {
         }
     }
 
+    @GetMapping("view/by_community/{id}")
+    public ResponseEntity<List<Moderator>> getModeratorsByCommunityId(@PathVariable ("id") long id) {
+        try {
+            List<Moderator> moderatorData = new ArrayList<Moderator>();
+            moderatorRepository.findBymoderatorComId(id).forEach(moderatorData::add);
+
+            if (moderatorData.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+            return new ResponseEntity<>(moderatorData, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
 
     @Operation(summary = "Add a moderator")
     @ApiResponses(value = { 

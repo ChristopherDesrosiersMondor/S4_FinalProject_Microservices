@@ -8,4 +8,5 @@ import com.example.ms_account.model.Moderator;
 
 public interface ModeratorRepository extends JpaRepository<Moderator, Long>  {
     List<Moderator> findBymoderatorUserId(long moderatorUserId);
+    List<Moderator> findBymoderatorComId(long moderatorComId);
 }
