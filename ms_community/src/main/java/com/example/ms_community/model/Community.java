@@ -13,48 +13,45 @@ import lombok.Setter;
 
 @Table(name = "community")
 @Entity
+@Getter 
+@Setter 
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Integer id;
 
     @Column(name = "Community name")
-    @Getter 
-    @Setter 
     private String communityName;
 
     @Column(name = "Description")
-    @Getter 
-    @Setter
     private String communityDescription;
 
     @Column(name = "Community logo")
-    @Getter 
-    @Setter
     private String communityLogo;
 
     @Column(name = "Community header image")
-    @Getter 
-    @Setter
     private String communityHeaderImage;
 
     @Column(name = "Created on")
-    @Getter 
-    @Setter
     private Date communityCreatedOnDate;
 
     @Column(name = "Ammount of members")
-    @Getter 
-    @Setter
     private Integer communityAmmountOfMembers;
 
     @Column(name = "Ammount of posts")
-    @Getter 
-    @Setter
     private Integer communityAmmountOfPosts;
 
     @Column(name = "Community creator id")
-    @Getter 
-    @Setter
     private Integer communityCreatorId;
+
+    public Community() {
+
+    }
+
+    public Community(Community newCommunity) {
+        this.communityName = newCommunity.getCommunityName();
+        this.communityDescription = newCommunity.getCommunityDescription();
+        this.communityCreatedOnDate = newCommunity.getCommunityCreatedOnDate();
+        this.communityCreatorId = newCommunity.getCommunityCreatorId();
+    }
 }

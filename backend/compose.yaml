@@ -2,15 +2,17 @@
 version: '3.1'
 
 services:
-
   db:
     image: postgres
-    container_name: postgres
+    container_name: db
     restart: always
     environment:
       POSTGRES_USER: darksea 
       POSTGRES_PASSWORD: root
       POSTGRES_DB: hublot.hull
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 1s 
     expose:
       - "5432"
     ports:
@@ -28,49 +30,52 @@ services:
 
   ms_community:
     image: darkseacollective/ms_account:version1.0
+    container_name: ms_community
     ports:
       - "8081:8081"
     networks:
       - darksea
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: darksea
-      DB_PASSWORD: root
-      DB_NAME: hublot.hull
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/hublot.hull
+      - SPRING_DATASOURCE_USERNAME=darksea
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     
 
   ms_account:
     image: darkseacollective/ms_account:version1.0
+    container_name: ms_account
     ports:
       - "8082:8082"
     networks:
       - darksea
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: darksea
-      DB_PASSWORD: root
-      DB_NAME: hublot.hull
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/hublot.hull
+      - SPRING_DATASOURCE_USERNAME=darksea
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
   ms_post:
     image: darkseacollective/ms_post:version1.0
+    container_name: ms_post
     ports:
       - "8083:8083"
     networks:
       - darksea
     environment:
-      DB_HOST: db
-      DB_PORT: 5432
-      DB_USER: darksea
-      DB_PASSWORD: root
-      DB_NAME: hublot.hull
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://db:5432/hublot.hull
+      - SPRING_DATASOURCE_USERNAME=darksea
+      - SPRING_DATASOURCE_PASSWORD=root
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
     depends_on:
-      - db
+      db:
+        condition: service_healthy
 
 networks:
   darksea:

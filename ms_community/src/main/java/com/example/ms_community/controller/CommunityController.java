@@ -1,8 +1,20 @@
 package com.example.ms_community.controller;
 
+
+
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -10,17 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.example.ms_community.model.Community;
 import com.example.ms_community.repository.CommunityRepository;
-
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.responses.ApiResponses;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import com.example.ms_community.model.Community;;
 
 @RestController
 @RequestMapping("/communities")
@@ -39,17 +44,14 @@ public class CommunityController {
             content = @Content)
         })
     @PostMapping("/add")
-    public Community addNewCommunity(@RequestBody Community newCommunity) {
-        Community community = new Community();
-        community.setCommunityName(newCommunity.getCommunityName());
-        community.setCommunityDescription(newCommunity.getCommunityDescription());
-        community.setCommunityCreatedOnDate(newCommunity.getCommunityCreatedOnDate());
-        community.setCommunityCreatorId(newCommunity.getCommunityCreatorId());
-        community.setCommunityLogo(newCommunity.getCommunityLogo());
-        community.setCommunityHeaderImage(newCommunity.getCommunityHeaderImage());
-
-        communityRepository.save(community);
-        return community;
+    public ResponseEntity<Community> addNewCommunity(@RequestBody Community newCommunity) {
+        try {
+            Community communityToAdd = communityRepository.save(new Community(newCommunity));
+            return new ResponseEntity<>(communityToAdd, HttpStatus.CREATED);
+        }
+        catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Operation(summary = "Gets all communities")
@@ -63,8 +65,20 @@ public class CommunityController {
             content = @Content)
         })
     @GetMapping("/view/all")
-    public @ResponseBody Iterable<Community> getAllCommunities() {
-        return communityRepository.findAll();
+    public ResponseEntity<List<Community>> getAllCommunities() {
+        try {
+            List<Community> CommunityList = new ArrayList<Community>();
+
+            communityRepository.findAll().forEach(CommunityList::add);
+
+            if(CommunityList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(CommunityList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
     }
 
     @Operation(summary = "Get a community by its id")
@@ -80,8 +94,15 @@ public class CommunityController {
             content = @Content)
         })
     @GetMapping("/view/{id}")
-    public Optional<Community> getCommunityById(@PathVariable Integer id) {
-        return communityRepository.findById(id);
+    public ResponseEntity<Community> getCommunityById(@PathVariable long id) {
+        Optional<Community> CommunityData = communityRepository.findById(id);
+
+        if(CommunityData.isPresent()) {
+            return new ResponseEntity<>(CommunityData.get(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Operation(summary = "Edits a community by its id")
@@ -97,19 +118,17 @@ public class CommunityController {
             content = @Content)
         })
     @PutMapping("/edit/{id}")
-    public String updateCommunity(@RequestBody Community updateCommunity, @PathVariable Integer id) {
-        return communityRepository.findById(id)
-            .map(community -> {
-                community.setCommunityName(updateCommunity.getCommunityName());
-                community.setCommunityDescription(updateCommunity.getCommunityDescription());
-                community.setCommunityCreatedOnDate(updateCommunity.getCommunityCreatedOnDate());
-                community.setCommunityCreatorId(updateCommunity.getCommunityCreatorId());
-                community.setCommunityLogo(updateCommunity.getCommunityLogo());
-                community.setCommunityHeaderImage(updateCommunity.getCommunityHeaderImage());
-                return "Community details have been changed.";
-            }).orElseGet(() -> {
-                return "This community was not found in the database";
-            });
+    public ResponseEntity<Community> updateCommunity(@PathVariable long id, @RequestBody Community updateCommunity) {
+        Optional<Community> communityData = communityRepository.findById(id);
+
+        if(communityData.isPresent()) {
+            Community modifiedCommunity = communityData.get();
+            modifiedCommunity = new Community(modifiedCommunity);
+            return new ResponseEntity<>(communityRepository.save(modifiedCommunity), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 
     @Operation(summary = "Deletes a community by its id")
@@ -125,8 +144,20 @@ public class CommunityController {
             content = @Content)
         })
     @DeleteMapping("/delete/{id}")
-    public String deleteCommunity(@PathVariable("id") Integer id) {
-        communityRepository.deleteById(id);
-        return "The community id: " + id + " has been deleted.";
+    public ResponseEntity<Community> deleteCommunity(@PathVariable("id") long id) {
+        Optional<Community> communityData = communityRepository.findById(id);
+        if(communityData.isPresent()) {
+            try {
+                Community deletedCommunity = communityData.get();
+                communityRepository.deleteById(id);
+                return new ResponseEntity<>(deletedCommunity, HttpStatus.OK);
+            }
+            catch (Exception e) {
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
     }
 }
