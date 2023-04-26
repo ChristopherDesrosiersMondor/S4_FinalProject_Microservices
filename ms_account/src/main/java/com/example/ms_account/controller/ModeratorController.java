@@ -5,7 +5,6 @@ import java.util.Optional;
 
 import com.example.ms_account.model.Moderator;
 import com.example.ms_account.repository.ModeratorRepository;
-import com.fasterxml.jackson.annotation.JsonCreator.Mode;
 
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,7 +14,6 @@ import io.swagger.v3.oas.annotations.responses.ApiResponses;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
