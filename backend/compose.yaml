@@ -19,6 +19,8 @@ services:
       - "5432:5432"
     networks:
       - darksea
+    volumes:
+       - ./data:/var/lib/postgresql/data
 
   adminer:
     image: adminer

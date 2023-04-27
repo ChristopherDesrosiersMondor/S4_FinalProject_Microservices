@@ -31,3 +31,9 @@ Sources:
 
 <https://docs.docker.com/engine/reference/commandline/tag/>
 
+[The importance of checking a service health before running others if they depend on it being started](https://stackoverflow.com/questions/68411932/my-spring-boot-app-container-cant-connect-to-my-postgresql-database)
+
+[Difference between link and depend on](https://www.baeldung.com/ops/docker-compose-links-depends-on)
+
+## How to persist (keep between runs) postgres data from the container
+<https://medium.com/codex/how-to-persist-and-backup-data-of-a-postgresql-docker-container-9fe269ff4334>
