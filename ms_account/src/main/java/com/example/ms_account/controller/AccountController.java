@@ -85,6 +85,30 @@ public class AccountController {
         }
     }
 
+    @Operation(summary = "Get an account by pseudo and password")
+    @ApiResponses(value = { 
+        @ApiResponse (responseCode = "200", description = "Account found", 
+        content = {@Content (mediaType = "application/json",
+        schema = @Schema (implementation = Account.class))}),
+        @ApiResponse(responseCode = "404", description = "Account not found", 
+            content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid data", 
+        content = @Content),
+        @ApiResponse(responseCode = "500", description = "Internal Server Error", 
+        content = @Content) })
+
+    @GetMapping("/view/{pseudo}/{password}")
+    public ResponseEntity<Account> getAccountByPseudoAndPassword(@PathVariable("pseudo") String pseudo, @PathVariable("password") String password) {
+        Optional<Account> accountData = accountRepository.findByuserPseudoAnduserPassword(pseudo, password);
+
+        if(accountData.isPresent()) {
+            return new ResponseEntity<>(accountData.get(), HttpStatus.OK);
+        }
+        else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
+
     @Operation(summary = "Add an account")
     @ApiResponses(value = { 
         @ApiResponse (responseCode = "201", description = "Account added", 
