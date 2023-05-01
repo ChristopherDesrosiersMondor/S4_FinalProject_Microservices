@@ -97,9 +97,9 @@ public class AccountController {
         @ApiResponse(responseCode = "500", description = "Internal Server Error", 
         content = @Content) })
 
-    @GetMapping("/view/{pseudo}/{password}")
+    @GetMapping("/view/by_pseudo/{pseudo}/{password}")
     public ResponseEntity<Account> getAccountByPseudoAndPassword(@PathVariable("pseudo") String pseudo, @PathVariable("password") String password) {
-        Optional<Account> accountData = accountRepository.findByuserPseudoAnduserPassword(pseudo, password);
+        Optional<Account> accountData = accountRepository.findByUserPseudoAndUserPassword(pseudo, password);
 
         if(accountData.isPresent()) {
             return new ResponseEntity<>(accountData.get(), HttpStatus.OK);
