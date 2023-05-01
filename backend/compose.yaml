@@ -11,7 +11,7 @@ services:
       POSTGRES_PASSWORD: root
       POSTGRES_DB: hublot.hull
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      test: ["CMD-SHELL", "pg_isready -U $$POSTGRES_USER -d $$POSTGRES_DB"]
       interval: 1s 
     expose:
       - "5432"
