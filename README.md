@@ -54,3 +54,96 @@ Sources:
 <https://developer.hashicorp.com/consul/tutorials/load-balancing/load-balancing-nginx>
 
 Pour vrai c'étais tellement compliqué trouver comment changer les dépendences, j'ai fini par faire un nouveau projet sur spring initializer avec les bonnes dépendances et copier le contenu dans mon pom.
+
+ce post ma le plus aider <https://stackoverflow.com/questions/69880150/how-to-resolve-consul-domain-inside-docker-compose>
+
+Faque pour comprendre ce qu'on doit faire pour ajouter le registry et que ca fonctionne avec nos services
+D'abord on ajoute les dépendences et le dependencies manager
+
+Dependences dans le pom.xml
+
+```xml
+<dependency>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-actuator</artifactId>
+</dependency>
+<dependency>
+    <groupId>org.springframework.cloud</groupId>
+    <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+</dependency>
+```
+
+Dependencies manager a mettre apres la balise </dependencies>
+
+```xml
+<dependencyManagement>
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-dependencies</artifactId>
+            <version>${spring-cloud.version}</version>
+            <type>pom</type>
+            <scope>import</scope>
+        </dependency>
+    </dependencies>
+</dependencyManagement>
+```
+
+Changer le code de la balise parent par celui ci
+
+```xml
+<parent>
+    <groupId>org.springframework.boot</groupId>
+    <artifactId>spring-boot-starter-parent</artifactId>
+    <version>3.0.6</version>
+    <relativePath /> <!-- lookup parent from repository -->
+</parent>
+```
+
+Ajouter cette propriete dans la balise properties (spring cloud version)
+
+```xml
+<properties>
+    <java.version>17</java.version>
+    <spring-cloud.version>2022.0.1</spring-cloud.version>
+</properties>
+```
+
+dans application properties ajouter ces proprietes (changer ms_community pour le nom de votre service et consul-container pour le nom du container de consul qui est notre registre. ici laisser le comme ca)
+
+```properties
+spring.application.name=ms_community
+spring.cloud.consul.host=consul-container
+spring.cloud.consul.port=8500
+spring.cloud.consul.discovery.prefer-ip-address=true
+```
+
+Dans le compose.yaml ajouter ceci dans la propriete environnement de votre service
+
+```yaml
+- WAIT_FOR_HOSTS=consul-container:8500
+```
+
+Dans depends on, ajouter ceci
+
+```yaml
+consul-container:
+  condition: service_started
+```
+
+La majorité des problemes etaient causes par le fait que les services ont besoin que consul soit demarrer et de savoir ou il est. Voir comment jai configurer consul pour afficher son hostname et faire partie du meme reseau que nos services.
+
+Quand vous avez fait les changements, faites les commandes suivantes pour rebuild vos images et les rendre disponible pour docker.
+
+```bash
+cd ms_community/
+mvn clean install
+docker build -t darkseacollective/ms_community:version1.1 .
+docker push darkseacollective/ms_community:version1.1
+cd ..
+cd backend/
+docker compose down
+docker compose up -d
+```
+
+Aller voir au localhost:8500 si consul voit vos services.
