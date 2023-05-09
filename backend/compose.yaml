@@ -23,10 +23,11 @@ services:
        - data:/var/lib/postgresql/data
 
   adminer:
-    image: adminer
+    image: adminer:4.8.1
+    container_name: adminer
     restart: always
     ports:
-      - 1312:8080
+      - 8080:8080
     networks:
       - darksea
 
