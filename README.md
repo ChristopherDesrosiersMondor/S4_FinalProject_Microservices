@@ -37,3 +37,10 @@ Sources:
 
 ## How to persist (keep between runs) postgres data from the container
 <https://medium.com/codex/how-to-persist-and-backup-data-of-a-postgresql-docker-container-9fe269ff4334>
+
+## Ressources for api gateway ans service registry
+<https://hub.docker.com/r/yeasy/nginx-consul-template>
+
+<https://medium.com/swlh/lets-build-microservices-part-iii-20e9e5c780a0>
+
+<https://developer.hashicorp.com/consul/tutorials/load-balancing/load-balancing-nginx>
