@@ -1,26 +1,32 @@
 # S4_FinalProject_Microservices
- microservices for account, community, post and search logic in java
+
+microservices for account, community, post and search logic in java
 
 ## To-Do
+
 Pour utiliser l'environnement de développement en docker, vous devez faire les étapes suivantes.
 
 1. Installer l'extension Dev containers
 2. Ctrl-shift-p : Dev Containers: Rebuild and Reopen in Container (Dans le workspace du projet que vous voulez ouvrir, donc après avoir ouvert le projet dans VSCode avec github desktop par exemple)
 
 ## Documentation open-api swagger-ui
-Utiliser springdoc, plus a jour que springfox : 
-    <https://www.baeldung.com/spring-rest-openapi-documentation>
-    <https://springdoc.org/v2/>
+
+Utiliser springdoc, plus a jour que springfox :
+<https://www.baeldung.com/spring-rest-openapi-documentation>
+<https://springdoc.org/v2/>
 
 ## Response codes
+
 <https://developer.mozilla.org/en-US/docs/Web/HTTP/Status>
 
 ## Simple tutorial for creating api with our setup
+
 Sources:
-    <https://www.bezkoder.com/spring-boot-postgresql-example/>
-    <https://www.makeuseof.com/rest-api-spring-boot-create/>
+<https://www.bezkoder.com/spring-boot-postgresql-example/>
+<https://www.makeuseof.com/rest-api-spring-boot-create/>
 
 ## Ressources we used to understand Dockerfile and image building
+
 <https://spring.io/guides/topicals/spring-boot-docker/>
 
 <https://docs.docker.com/engine/reference/commandline/build/>
@@ -36,11 +42,15 @@ Sources:
 [Difference between link and depend on](https://www.baeldung.com/ops/docker-compose-links-depends-on)
 
 ## How to persist (keep between runs) postgres data from the container
+
 <https://medium.com/codex/how-to-persist-and-backup-data-of-a-postgresql-docker-container-9fe269ff4334>
 
 ## Ressources for api gateway ans service registry
+
 <https://hub.docker.com/r/yeasy/nginx-consul-template>
 
 <https://medium.com/swlh/lets-build-microservices-part-iii-20e9e5c780a0>
 
 <https://developer.hashicorp.com/consul/tutorials/load-balancing/load-balancing-nginx>
+
+Pour vrai c'étais tellement compliqué trouver comment changer les dépendences, j'ai fini par faire un nouveau projet sur spring initializer avec les bonnes dépendances et copier le contenu dans mon pom.
