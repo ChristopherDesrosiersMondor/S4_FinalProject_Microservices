@@ -76,9 +76,12 @@ services:
       - SPRING_DATASOURCE_USERNAME=darksea
       - SPRING_DATASOURCE_PASSWORD=root
       - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+      - WAIT_FOR_HOSTS=consul-container:8500
     depends_on:
       db:
         condition: service_healthy
+      consul-container:
+        condition: service_started
 
   ms_post:
     image: darkseacollective/ms_post:version1.0
