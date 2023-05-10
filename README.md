@@ -147,3 +147,9 @@ docker compose up -d
 ```
 
 Aller voir au localhost:8500 si consul voit vos services.
+
+## Next step for the backend: transfering to kubernetes, making everyservice highly available, load balanced and protected by a gateway
+
+<https://kubernetes.io/docs/setup/>
+<https://www.docker.com/blog/how-kubernetes-works-under-the-hood-with-docker-desktop/>
+<https://kubernetes.io/docs/tasks/configure-pod-container/translate-compose-kubernetes/>
