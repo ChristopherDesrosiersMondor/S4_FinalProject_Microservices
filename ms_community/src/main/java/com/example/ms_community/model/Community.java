@@ -13,8 +13,8 @@ import lombok.Setter;
 
 @Table(name = "community")
 @Entity
-@Getter 
-@Setter 
+@Getter
+@Setter
 public class Community {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -53,5 +53,9 @@ public class Community {
         this.communityDescription = newCommunity.getCommunityDescription();
         this.communityCreatedOnDate = newCommunity.getCommunityCreatedOnDate();
         this.communityCreatorId = newCommunity.getCommunityCreatorId();
+        this.communityLogo = newCommunity.getCommunityLogo();
+        this.communityHeaderImage = newCommunity.getCommunityHeaderImage();
+        this.communityAmmountOfMembers = newCommunity.getCommunityAmmountOfMembers();
+        this.communityAmmountOfPosts = newCommunity.getCommunityAmmountOfPosts();
     }
 }
