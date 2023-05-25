@@ -84,7 +84,7 @@ services:
         condition: service_started
 
   ms_post:
-    image: darkseacollective/ms_post:version1.0
+    image: darkseacollective/ms_post:version1.1
     container_name: ms_post
     ports:
       - "8083:8083"
