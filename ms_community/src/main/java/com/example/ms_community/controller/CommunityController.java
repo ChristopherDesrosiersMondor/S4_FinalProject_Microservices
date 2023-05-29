@@ -74,6 +74,28 @@ public class CommunityController {
         }
     }
 
+    @Operation(summary = "Gets a community by name")
+    @ApiResponses(value = {
+            @ApiResponse(responseCode = "200", description = "Found community", content = {
+                    @Content(mediaType = "application/json", schema = @Schema(implementation = Community.class)) }),
+            @ApiResponse(responseCode = "404", description = "The community was not found", content = @Content),
+            @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
+    })
+    @GetMapping("/view/{name}")
+    public ResponseEntity<List<Community>> getCommunityByName(@PathVariable("name") String name) {
+        try {
+            List<Community> CommunityList = communityRepository.findByCommunityName(name);
+
+            if (CommunityList.isEmpty()) {
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }
+
+            return new ResponseEntity<>(CommunityList, HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
     @Operation(summary = "Get a community by its id")
     @ApiResponses(value = {
             @ApiResponse(responseCode = "200", description = "Found the community", content = {
