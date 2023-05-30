@@ -81,18 +81,15 @@ public class CommunityController {
             @ApiResponse(responseCode = "404", description = "The community was not found", content = @Content),
             @ApiResponse(responseCode = "500", description = "Internal server error", content = @Content)
     })
-    @GetMapping("/view/{name}")
-    public ResponseEntity<Community> getCommunityByName(@PathVariable("name") String name) {
-        try {
-            Optional<Community> community = communityRepository.findBycommunityName(name);
 
-            if (community.isPresent()) {
-                return new ResponseEntity<>(community.get(), HttpStatus.OK);
-            } else {
-                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
-            }
-        } catch (Exception e) {
-            return new ResponseEntity<>(null, HttpStatus.INTERNAL_SERVER_ERROR);
+    @GetMapping("/get/{name}")
+    public ResponseEntity<Community> getCommunityByName(@PathVariable("name") String name) {
+        Optional<Community> community = communityRepository.findBycommunityName(name);
+
+        if (community.isPresent()) {
+            return new ResponseEntity<>(community.get(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
 
