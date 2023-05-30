@@ -18,6 +18,37 @@ router.get('/communities/get/:name', (req, res) => {
     })
 })
 
+router.put('/communities/edit/:id', (req, res) => {
+    axios.put(req, 'http://localhost:8081/communities/edit/' + req.params.id).then((response) => {
+        res.send(response.data)
+    })
+})
+
+// PUT
+// /communities/edit/{id}
+// Edits a community by its id
+
+// POST
+// /communities/add
+// Adds a community do the database
+
+// GET
+// /communities/view/{id}
+// Get a community by its id
+
+// GET
+// /communities/view/all
+// Gets all communities
+
+// GET
+// /communities/get/{name}
+// Gets a community by name
+
+// DELETE
+// /communities/delete/{id}
+// Deletes a community by its id
+
+// Schemas
 
 const app = express()
 app.use(cors())
